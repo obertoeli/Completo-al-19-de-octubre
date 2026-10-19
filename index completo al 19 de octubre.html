@@ -1,0 +1,1124 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#155eef" />
+  <meta name="description" content="ControlPYME — plataforma integral de gestión empresarial para PYMES." />
+  <title>ControlPYME</title>
+  <style>
+
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --panel:#f9fafb;
+  --text:#101828;
+  --muted:#667085;
+  --line:#e4e7ec;
+  --accent:#155eef;
+  --accent-strong:#004eeb;
+  --accent-soft:#eef4ff;
+  --success:#067647;
+  --success-bg:#ecfdf3;
+  --warn:#b54708;
+  --warn-bg:#fff7ed;
+  --danger:#b42318;
+  --danger-bg:#fef3f2;
+  --purple:#6941c6;
+  --purple-bg:#f4f3ff;
+  --shadow:0 8px 24px rgba(16,24,40,.07);
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid rgba(21,94,239,.2);
+  outline-offset:2px;
+}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.mobile-only{display:none}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:40;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:12px 18px;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand strong{display:block;font-size:17px}
+.brand span{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.logo{width:38px;height:38px;border-radius:11px;flex:none}
+.top-actions{display:flex;align-items:center;gap:10px}
+.top-actions select{min-width:190px}
+select,input,textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:10px 12px;
+  background:#fff;
+  color:var(--text);
+  font-size:16px;
+}
+textarea{min-height:96px;resize:vertical}
+.icon-btn{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:11px;
+  min-width:44px;
+  min-height:44px;
+}
+.layout{
+  max-width:1440px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:245px minmax(0,1fr);
+}
+.sidebar{
+  position:sticky;
+  top:63px;
+  align-self:start;
+  height:calc(100vh - 63px);
+  padding:18px 12px;
+  border-right:1px solid var(--line);
+  background:#fff;
+  overflow:auto;
+}
+.sidebar nav{display:grid;gap:6px}
+.nav-btn{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#344054;
+  text-align:left;
+  border-radius:11px;
+  padding:11px 12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+}
+.nav-btn:hover{background:#f2f4f7}
+.nav-btn.active{background:var(--accent-soft);color:#3538cd}
+.nav-btn.disabled{opacity:.42;cursor:not-allowed}
+.nav-icon{width:24px;text-align:center}
+.sidebar-note{
+  margin-top:18px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+}
+.sidebar-note strong{display:block;color:var(--text);margin-bottom:3px}
+.main{min-width:0;padding:22px 24px 90px}
+.page-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+.page-head h1{margin:0;font-size:28px;line-height:1.15}
+.page-head p{margin:6px 0 0;color:var(--muted);max-width:760px;line-height:1.5}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{
+  border:0;
+  border-radius:11px;
+  min-height:42px;
+  padding:9px 13px;
+  font-weight:800;
+}
+.btn.primary{background:var(--accent);color:white}
+.btn.primary:hover{background:var(--accent-strong)}
+.btn.secondary{background:#fff;color:var(--text);border:1px solid var(--line)}
+.btn.ghost{background:#f2f4f7;color:#344054}
+.btn.danger{background:var(--danger-bg);color:var(--danger)}
+.btn.small{min-height:34px;padding:6px 9px;font-size:12px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
+  min-width:0;
+}
+.card h2{font-size:18px;margin:0 0 14px}
+.card h3{font-size:15px;margin:0 0 5px}
+.stat{grid-column:span 3}
+.stat .num{font-size:28px;font-weight:850}
+.stat .label{font-size:13px;color:var(--muted);margin-top:3px}
+.span-8{grid-column:span 8}.span-7{grid-column:span 7}.span-6{grid-column:span 6}.span-5{grid-column:span 5}.span-4{grid-column:span 4}.span-12{grid-column:span 12}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 8px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.badge.blue{background:#eff8ff;color:#175cd3}
+.badge.green{background:var(--success-bg);color:var(--success)}
+.badge.orange{background:var(--warn-bg);color:var(--warn)}
+.badge.red{background:var(--danger-bg);color:var(--danger)}
+.badge.purple{background:var(--purple-bg);color:var(--purple)}
+.list{display:grid;gap:10px}
+.row{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:13px;
+  background:#fff;
+}
+.row-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+.row-title{font-weight:800}
+.row-meta{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.45}
+.module-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+.module-row:last-child{border-bottom:0}
+.progress{
+  height:8px;background:#eef2f6;border-radius:999px;overflow:hidden;margin-top:10px
+}
+.progress > span{display:block;height:100%;background:var(--accent);border-radius:999px}
+.kpi{
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--panel);
+}
+.kpi strong{display:block;font-size:18px}
+.kpi span{font-size:12px;color:var(--muted)}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+label{display:block;font-size:12px;font-weight:800;color:#475467;margin-bottom:5px}
+.form-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.modal-wrap{
+  position:fixed;
+  inset:0;
+  z-index:80;
+  display:grid;
+  place-items:center;
+  padding:18px;
+  background:rgba(16,24,40,.45);
+}
+.modal{
+  width:min(700px,100%);
+  max-height:88vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:20px;
+  border:1px solid var(--line);
+  padding:18px;
+  box-shadow:0 20px 60px rgba(16,24,40,.2);
+}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.modal-head h2{margin:0}
+.close{border:0;background:#f2f4f7;border-radius:10px;width:40px;height:40px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:680px}
+th,td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;vertical-align:top}
+th{color:#475467;background:#f9fafb;font-size:12px}
+.toggle{
+  display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700
+}
+.toggle input{width:18px;height:18px}
+.permissions-grid{
+  display:grid;
+  grid-template-columns:minmax(160px,1fr) 90px 90px;
+  gap:0;
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+}
+.permissions-grid > div{padding:10px;border-bottom:1px solid var(--line)}
+.permissions-grid > div:nth-last-child(-n+3){border-bottom:0}
+.permissions-grid .head{font-size:12px;font-weight:800;background:#f9fafb;color:#475467}
+.center{text-align:center}
+.callout{
+  border:1px dashed var(--line);
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+}
+.empty{padding:22px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px}
+.mobile-nav{display:none}
+.toast{
+  position:fixed;
+  z-index:100;
+  left:50%;
+  bottom:24px;
+  transform:translateX(-50%);
+  background:#101828;
+  color:#fff;
+  padding:10px 14px;
+  border-radius:999px;
+  font-size:13px;
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  max-width:90%;
+  text-align:center;
+}
+.toast.show{opacity:1}
+@media(max-width:980px){
+  .layout{grid-template-columns:205px minmax(0,1fr)}
+  .stat{grid-column:span 6}
+  .span-8,.span-7,.span-6,.span-5,.span-4{grid-column:span 12}
+}
+@media(max-width:760px){
+  .mobile-only{display:inline-grid;place-items:center}
+  .topbar{padding:10px 12px}
+  .top-actions select{min-width:145px;max-width:165px}
+  .layout{display:block}
+  .sidebar{
+    position:fixed;
+    z-index:70;
+    top:59px;
+    left:0;
+    width:min(290px,86vw);
+    height:calc(100vh - 59px);
+    transform:translateX(-105%);
+    transition:.2s;
+    box-shadow:0 18px 50px rgba(16,24,40,.18);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .main{padding:16px 14px 92px}
+  .page-head h1{font-size:24px}
+  .stat{grid-column:span 6}
+  .form-grid{grid-template-columns:1fr}
+  .mobile-nav{
+    position:fixed;
+    left:0;right:0;bottom:0;
+    z-index:50;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    background:#fff;
+    border-top:1px solid var(--line);
+    padding:7px max(8px,env(safe-area-inset-right)) calc(7px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left));
+  }
+  .mobile-nav button{
+    border:0;background:transparent;color:#667085;
+    padding:7px 4px;font-size:11px;font-weight:800
+  }
+  .mobile-nav button.active{color:var(--accent)}
+  .toast{bottom:78px}
+}
+@media(max-width:420px){
+  .brand span{display:none}
+  .top-actions select{max-width:140px;min-width:132px}
+  .stat{grid-column:span 12}
+  .permissions-grid{grid-template-columns:minmax(130px,1fr) 72px 72px}
+}
+
+  </style>
+</head>
+<body>
+  <div id="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true" style="display:grid;place-items:center;color:white;font-weight:900;background:linear-gradient(135deg,#155eef,#7f56d9)">C</div>
+        <div>
+          <strong>ControlPYME</strong>
+          <span id="company-name">Empresa Demo C.A.</span>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <label class="sr-only" for="role-select">Simular rol</label>
+        <select id="role-select" aria-label="Simular rol">
+          <option value="owner">Propietario</option>
+          <option value="supervisor">Supervisor general</option>
+          <option value="admin">Administrador</option>
+          <option value="finance">Finanzas</option>
+          <option value="legal">Jurídico</option>
+          <option value="employee">Empleado</option>
+        </select>
+        <button id="menu-btn" class="icon-btn mobile-only" aria-label="Abrir menú">☰</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside id="sidebar" class="sidebar">
+        <nav id="nav"></nav>
+        <div class="sidebar-note">
+          <strong>Demo funcional</strong>
+          <span>Datos guardados localmente en este navegador.</span>
+        </div>
+      </aside>
+
+      <main id="main" class="main"></main>
+    </div>
+
+    <nav id="mobile-nav" class="mobile-nav"></nav>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+
+(() => {
+  const STORAGE_KEY = 'controlpyme_complete_demo_v1';
+
+  const roleNames = {
+    owner:'Propietario',
+    supervisor:'Supervisor general',
+    admin:'Administrador',
+    finance:'Finanzas',
+    legal:'Jurídico',
+    employee:'Empleado'
+  };
+
+  const moduleInfo = {
+    dashboard:{label:'Inicio',icon:'⌂'},
+    tasks:{label:'Tareas',icon:'✓'},
+    projects:{label:'Proyectos',icon:'▣'},
+    finance:{label:'Finanzas',icon:'$'},
+    legal:{label:'Jurídico',icon:'§'},
+    inventory:{label:'Inventario',icon:'□'},
+    docs:{label:'Documentos',icon:'≡'},
+    team:{label:'Equipo y permisos',icon:'◎'},
+    settings:{label:'Configuración',icon:'⚙'}
+  };
+
+  const baseState = {
+    company:{name:'Empresa Demo C.A.',modules:{
+      dashboard:true,tasks:true,projects:true,finance:true,legal:true,inventory:true,docs:true,team:true,settings:true
+    }},
+    currentRole:'owner',
+    currentView:'dashboard',
+    permissions:{
+      owner:{
+        dashboard:{view:true,edit:true}, tasks:{view:true,edit:true}, projects:{view:true,edit:true},
+        finance:{view:true,edit:true}, legal:{view:true,edit:true}, inventory:{view:true,edit:true},
+        docs:{view:true,edit:true}, team:{view:true,edit:true}, settings:{view:true,edit:true}
+      },
+      supervisor:{
+        dashboard:{view:true,edit:false}, tasks:{view:true,edit:false}, projects:{view:true,edit:false},
+        finance:{view:true,edit:false}, legal:{view:true,edit:false}, inventory:{view:true,edit:false},
+        docs:{view:true,edit:false}, team:{view:true,edit:false}, settings:{view:false,edit:false}
+      },
+      admin:{
+        dashboard:{view:true,edit:false}, tasks:{view:true,edit:true}, projects:{view:true,edit:true},
+        finance:{view:true,edit:false}, legal:{view:false,edit:false}, inventory:{view:true,edit:true},
+        docs:{view:true,edit:true}, team:{view:true,edit:false}, settings:{view:false,edit:false}
+      },
+      finance:{
+        dashboard:{view:true,edit:false}, tasks:{view:true,edit:false}, projects:{view:true,edit:false},
+        finance:{view:true,edit:true}, legal:{view:false,edit:false}, inventory:{view:true,edit:false},
+        docs:{view:true,edit:false}, team:{view:false,edit:false}, settings:{view:false,edit:false}
+      },
+      legal:{
+        dashboard:{view:true,edit:false}, tasks:{view:true,edit:false}, projects:{view:true,edit:false},
+        finance:{view:false,edit:false}, legal:{view:true,edit:true}, inventory:{view:false,edit:false},
+        docs:{view:true,edit:true}, team:{view:false,edit:false}, settings:{view:false,edit:false}
+      },
+      employee:{
+        dashboard:{view:true,edit:false}, tasks:{view:true,edit:true}, projects:{view:true,edit:false},
+        finance:{view:false,edit:false}, legal:{view:false,edit:false}, inventory:{view:false,edit:false},
+        docs:{view:true,edit:false}, team:{view:false,edit:false}, settings:{view:false,edit:false}
+      }
+    },
+    users:[
+      {id:1,name:'Eli',role:'owner',area:'Dirección'},
+      {id:2,name:'Carlos',role:'employee',area:'Operaciones'},
+      {id:3,name:'María',role:'finance',area:'Finanzas'},
+      {id:4,name:'Andrea',role:'legal',area:'Jurídico'},
+      {id:5,name:'José',role:'supervisor',area:'Supervisión'}
+    ],
+    projects:[
+      {id:1,name:'Importación Cliente ABC',owner:'Carlos',status:'En proceso',progress:65,next:'Confirmar fecha de despacho',client:'Cliente ABC'},
+      {id:2,name:'Renovación sede Caracas',owner:'Andrea',status:'En revisión',progress:40,next:'Revisar cláusulas de renovación',client:'Interno'},
+      {id:3,name:'Reposición de inventario',owner:'Carlos',status:'Planificación',progress:25,next:'Confirmar cantidades a comprar',client:'Interno'}
+    ],
+    tasks:[
+      {id:101,title:'Confirmar llegada de mercancía',project:'Importación Cliente ABC',assignee:'Carlos',due:'2026-10-19',priority:'Alta',status:'Pendiente',note:''},
+      {id:102,title:'Cargar acta de recepción',project:'Importación Cliente ABC',assignee:'Carlos',due:'2026-10-19',priority:'Media',status:'En proceso',note:'Mercancía en revisión'},
+      {id:103,title:'Revisar contrato de arrendamiento',project:'Renovación sede Caracas',assignee:'Andrea',due:'2026-10-23',priority:'Alta',status:'En proceso',note:'Pendiente observación sobre renovación'},
+      {id:104,title:'Conciliar saldo bancario',project:'Administración',assignee:'María',due:'2026-10-20',priority:'Media',status:'Pendiente',note:''}
+    ],
+    finance:{
+      banks:[
+        {id:1,name:'Banco principal',currency:'USD',balance:72500},
+        {id:2,name:'Banco secundario',currency:'USD',balance:9000}
+      ],
+      cash:[
+        {id:1,name:'Caja principal',currency:'USD',balance:8200},
+        {id:2,name:'Caja sucursal',currency:'USD',balance:4000}
+      ],
+      crypto:[
+        {id:1,name:'USDT',currency:'USD',balance:25000},
+        {id:2,name:'USDC',currency:'USD',balance:8500},
+        {id:3,name:'BTC',currency:'USD',balance:3250}
+      ],
+      receivables:[
+        {id:1,name:'Cliente ABC',amount:19000,due:'2026-10-25',status:'Pendiente'}
+      ],
+      payables:[
+        {id:1,name:'Proveedor XYZ',amount:11000,due:'2026-10-22',status:'Pendiente'}
+      ]
+    },
+    legalDocs:[
+      {id:1,title:'Contrato de arrendamiento — Sede Caracas',type:'Arrendamiento',expires:'2026-12-31',responsible:'Andrea',status:'Vigente'},
+      {id:2,title:'Título de propiedad — Vehículo 01',type:'Propiedad',expires:'',responsible:'Andrea',status:'Vigente'},
+      {id:3,title:'Permiso operativo',type:'Permiso',expires:'2027-01-15',responsible:'Andrea',status:'Vigente'},
+      {id:4,title:'Acreditaciones personal de seguridad',type:'Seguridad',expires:'2026-11-30',responsible:'Andrea',status:'Revisar'}
+    ],
+    inventory:[
+      {id:1,name:'Generador 5 kW',sku:'GEN-5KW',location:'Almacén Caracas',stock:18,reserved:5,min:8,cost:620},
+      {id:2,name:'Equipo de red',sku:'NET-01',location:'Oficina principal',stock:9,reserved:2,min:3,cost:190},
+      {id:3,name:'Repuesto industrial A',sku:'RPA-100',location:'Almacén Caracas',stock:4,reserved:1,min:5,cost:85}
+    ],
+    assets:[
+      {id:1,name:'Vehículo Toyota Hilux',type:'Vehículo',responsible:'Operaciones',status:'Activo',document:'Título cargado'},
+      {id:2,name:'Laptop Administración 01',type:'Tecnología',responsible:'Administración',status:'Activo',document:'Factura cargada'},
+      {id:3,name:'Montacargas 01',type:'Maquinaria',responsible:'Almacén',status:'Mantenimiento',document:'Póliza vigente'}
+    ],
+    docs:[
+      {id:1,title:'Manual de procedimientos',category:'Procedimientos',audience:'Todos'},
+      {id:2,title:'Organigrama general',category:'Organización',audience:'Todos'},
+      {id:3,title:'Procedimiento de recepción de mercancía',category:'Operaciones',audience:'Operaciones'},
+      {id:4,title:'Política de aprobación de pagos',category:'Finanzas',audience:'Finanzas'}
+    ],
+    activity:[
+      {id:1,text:'Carlos inició “Cargar acta de recepción”',at:'Hoy 08:10'},
+      {id:2,text:'María actualizó el saldo de Banco principal',at:'Ayer 17:42'},
+      {id:3,text:'Andrea cargó Contrato de arrendamiento',at:'Ayer 15:05'},
+      {id:4,text:'José revisó Importación Cliente ABC',at:'Ayer 11:20'}
+    ]
+  };
+
+  let state = loadState();
+
+  const main = document.getElementById('main');
+  const nav = document.getElementById('nav');
+  const mobileNav = document.getElementById('mobile-nav');
+  const roleSelect = document.getElementById('role-select');
+  const companyName = document.getElementById('company-name');
+  const sidebar = document.getElementById('sidebar');
+  const menuBtn = document.getElementById('menu-btn');
+  const toastEl = document.getElementById('toast');
+
+  function deepClone(obj){ return JSON.parse(JSON.stringify(obj)); }
+  function loadState(){
+    try{
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if(saved && saved.company && saved.permissions) return saved;
+    }catch(e){}
+    return deepClone(baseState);
+  }
+  function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  function resetState(){ state = deepClone(baseState); saveState(); renderAll(); toast('Demo restablecida'); }
+  function toast(message){
+    toastEl.textContent = message;
+    toastEl.classList.add('show');
+    clearTimeout(toastEl._timer);
+    toastEl._timer = setTimeout(()=>toastEl.classList.remove('show'),1700);
+  }
+  function esc(value){
+    const d=document.createElement('div');
+    d.textContent = value ?? '';
+    return d.innerHTML;
+  }
+  function fmtMoney(n){ return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number(n)||0); }
+  function perm(module){ return state.permissions[state.currentRole]?.[module] || {view:false,edit:false}; }
+  function canView(module){ return Boolean(state.company.modules[module] && perm(module).view); }
+  function canEdit(module){ return Boolean(state.company.modules[module] && perm(module).edit); }
+  function roleLabel(){ return roleNames[state.currentRole] || state.currentRole; }
+
+  function setView(view){
+    if(!canView(view)){
+      toast('Tu rol no tiene acceso a este módulo');
+      return;
+    }
+    state.currentView = view;
+    saveState();
+    renderAll();
+    sidebar.classList.remove('open');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function renderNav(){
+    const order=['dashboard','tasks','projects','finance','legal','inventory','docs','team','settings'];
+    nav.innerHTML='';
+    order.forEach(key=>{
+      const enabled = state.company.modules[key] && perm(key).view;
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='nav-btn '+(state.currentView===key?'active ':'')+(!enabled?'disabled':'');
+      btn.innerHTML=`<span class="nav-icon">${moduleInfo[key].icon}</span><span>${moduleInfo[key].label}</span>`;
+      if(enabled) btn.addEventListener('click',()=>setView(key));
+      else btn.title='Sin acceso para este rol';
+      nav.appendChild(btn);
+    });
+
+    const mobileKeys=['dashboard','tasks','projects','inventory'];
+    mobileNav.innerHTML='';
+    mobileKeys.forEach(key=>{
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className=state.currentView===key?'active':'';
+      btn.innerHTML=`<div>${moduleInfo[key].icon}</div><span>${moduleInfo[key].label}</span>`;
+      btn.disabled=!canView(key);
+      btn.addEventListener('click',()=>setView(key));
+      mobileNav.appendChild(btn);
+    });
+  }
+
+  function ensureValidView(){
+    if(canView(state.currentView)) return;
+    const fallback=['dashboard','tasks','projects','finance','legal','inventory','docs','team','settings'].find(canView);
+    state.currentView = fallback || 'dashboard';
+  }
+
+  function pageHead(title,desc,actions=''){
+    return `<div class="page-head"><div><h1>${esc(title)}</h1><p>${esc(desc)}</p></div><div class="actions">${actions}</div></div>`;
+  }
+
+  function statusBadge(status){
+    const s=(status||'').toLowerCase();
+    const cls = s.includes('complet') || s.includes('vigente') || s.includes('activo') ? 'green' :
+                s.includes('pend') || s.includes('plan') || s.includes('revis') ? 'orange' :
+                s.includes('manten') ? 'red' : 'blue';
+    return `<span class="badge ${cls}">${esc(status)}</span>`;
+  }
+
+  function priorityBadge(p){
+    const cls = p==='Alta'?'red':p==='Media'?'orange':'blue';
+    return `<span class="badge ${cls}">${esc(p)}</span>`;
+  }
+
+  function renderDashboard(){
+    const openTasks = state.tasks.filter(t=>t.status!=='Completada').length;
+    const activeProjects = state.projects.length;
+    const finTotal=[...state.finance.banks,...state.finance.cash,...state.finance.crypto].reduce((a,b)=>a+Number(b.balance||0),0);
+    const lowStock=state.inventory.filter(i=>Number(i.stock)<=Number(i.min)).length;
+    const nextLegal=state.legalDocs.filter(d=>d.expires).sort((a,b)=>a.expires.localeCompare(b.expires)).slice(0,3);
+
+    main.innerHTML = pageHead(
+      'Centro de control',
+      `Vista general para ${roleLabel()}. La información cambia según los permisos del usuario.`,
+      canEdit('tasks')?'<button class="btn primary" id="quick-task">+ Nueva tarea</button>':''
+    ) + `
+    <div class="grid">
+      <section class="card stat"><div class="num">${activeProjects}</div><div class="label">Proyectos activos</div></section>
+      <section class="card stat"><div class="num">${openTasks}</div><div class="label">Tareas abiertas</div></section>
+      <section class="card stat"><div class="num">${lowStock}</div><div class="label">Alertas de inventario</div></section>
+      <section class="card stat"><div class="num">${canView('finance')?fmtMoney(finTotal):'—'}</div><div class="label">${canView('finance')?'Disponibilidad registrada':'Finanzas restringidas'}</div></section>
+
+      <section class="card span-7">
+        <h2>Proyectos principales</h2>
+        <div class="list">
+          ${state.projects.map(p=>`
+            <div class="row">
+              <div class="row-head">
+                <div>
+                  <div class="row-title">${esc(p.name)}</div>
+                  <div class="row-meta">Responsable: ${esc(p.owner)} · Próximo paso: ${esc(p.next)}</div>
+                </div>
+                ${statusBadge(p.status)}
+              </div>
+              <div class="progress"><span style="width:${Math.max(0,Math.min(100,p.progress))}%"></span></div>
+              <div class="row-meta">${p.progress}% completado</div>
+            </div>`).join('')}
+        </div>
+      </section>
+
+      <aside class="card span-5">
+        <h2>Actividad reciente</h2>
+        <div class="list">
+          ${state.activity.slice(0,6).map(a=>`
+            <div class="module-row">
+              <div><strong>${esc(a.text)}</strong><div class="row-meta">${esc(a.at)}</div></div>
+            </div>`).join('')}
+        </div>
+      </aside>
+
+      <section class="card span-6">
+        <h2>Atención requerida</h2>
+        <div class="list">
+          ${state.inventory.filter(i=>Number(i.stock)<=Number(i.min)).map(i=>`
+            <div class="row"><div class="row-head"><div><div class="row-title">${esc(i.name)}</div><div class="row-meta">Stock ${i.stock} · mínimo ${i.min}</div></div><span class="badge red">Stock bajo</span></div></div>`).join('') || '<div class="empty">Sin alertas de inventario.</div>'}
+        </div>
+      </section>
+
+      <section class="card span-6">
+        <h2>Jurídico y vencimientos</h2>
+        ${canView('legal') ? `
+          <div class="list">
+            ${nextLegal.map(d=>`<div class="row"><div class="row-head"><div><div class="row-title">${esc(d.title)}</div><div class="row-meta">${d.expires?`Vence: ${esc(d.expires)}`:'Sin vencimiento'}</div></div>${statusBadge(d.status)}</div></div>`).join('')}
+          </div>` : '<div class="empty">Tu rol no tiene acceso al módulo jurídico.</div>'}
+      </section>
+    </div>`;
+
+    document.getElementById('quick-task')?.addEventListener('click',()=>openTaskModal());
+  }
+
+  function renderTasks(){
+    let tasks = state.tasks;
+    if(state.currentRole==='employee') tasks = tasks.filter(t=>t.assignee==='Carlos');
+
+    main.innerHTML = pageHead(
+      'Tareas',
+      state.currentRole==='employee' ? 'Tus tareas asignadas y actualizaciones operativas.' : 'Asigna responsables, prioridades, fechas y seguimiento.',
+      canEdit('tasks') && state.currentRole!=='employee' ? '<button class="btn primary" id="new-task">+ Nueva tarea</button>' : ''
+    ) + `
+    <div class="grid">
+      <section class="card span-12">
+        <div class="list">
+          ${tasks.map(t=>`
+            <div class="row" data-task="${t.id}">
+              <div class="row-head">
+                <div>
+                  <div class="row-title">${esc(t.title)}</div>
+                  <div class="row-meta">${esc(t.project)} · Responsable: ${esc(t.assignee)} · Fecha: ${esc(t.due)}</div>
+                </div>
+                <div class="actions">${priorityBadge(t.priority)} ${statusBadge(t.status)}</div>
+              </div>
+              ${t.note?`<div class="row-meta"><strong>Último avance:</strong> ${esc(t.note)}</div>`:''}
+              ${canEdit('tasks') ? `
+                <div class="form-grid" style="margin-top:10px">
+                  <div>
+                    <label>Estado</label>
+                    <select data-task-status="${t.id}">
+                      ${['Pendiente','En proceso','Completada'].map(s=>`<option ${s===t.status?'selected':''}>${s}</option>`).join('')}
+                    </select>
+                  </div>
+                  <div>
+                    <label>Registrar avance</label>
+                    <input data-task-note="${t.id}" value="${esc(t.note)}" placeholder="Escribe una actualización breve" />
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="btn primary small" data-task-save="${t.id}">Guardar actualización</button>
+                </div>` : ''}
+            </div>`).join('') || '<div class="empty">No hay tareas visibles para este perfil.</div>'}
+        </div>
+      </section>
+    </div>`;
+
+    document.getElementById('new-task')?.addEventListener('click',()=>openTaskModal());
+    main.querySelectorAll('[data-task-save]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const id=Number(btn.dataset.taskSave);
+        const task=state.tasks.find(t=>t.id===id);
+        if(!task) return;
+        task.status=main.querySelector(`[data-task-status="${id}"]`).value;
+        task.note=main.querySelector(`[data-task-note="${id}"]`).value.trim();
+        state.activity.unshift({id:Date.now(),text:`${state.currentRole==='employee'?'Carlos':roleLabel()} actualizó “${task.title}”`,at:'Ahora'});
+        saveState(); renderTasks(); toast('Tarea actualizada');
+      });
+    });
+  }
+
+  function openTaskModal(){
+    if(!canEdit('tasks')) return toast('No tienes permiso para modificar tareas');
+    showModal('Nueva tarea', `
+      <form id="task-form">
+        <div class="form-grid">
+          <div><label>Título</label><input id="f-title" required maxlength="120" placeholder="Ej. Confirmar recepción de mercancía"></div>
+          <div><label>Responsable</label><select id="f-assignee">${state.users.map(u=>`<option>${esc(u.name)}</option>`).join('')}</select></div>
+          <div><label>Proyecto</label><select id="f-project">${state.projects.map(p=>`<option>${esc(p.name)}</option>`).join('')}<option>Administración</option></select></div>
+          <div><label>Fecha</label><input id="f-due" type="date" value="2026-10-20"></div>
+          <div><label>Prioridad</label><select id="f-priority"><option>Alta</option><option>Media</option><option>Baja</option></select></div>
+          <div><label>Estado</label><select id="f-status"><option>Pendiente</option><option>En proceso</option></select></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn primary" type="submit">Crear y asignar</button>
+        </div>
+      </form>`);
+    document.getElementById('task-form').addEventListener('submit',e=>{
+      e.preventDefault();
+      const title=document.getElementById('f-title').value.trim();
+      if(!title) return;
+      const task={
+        id:Date.now(),
+        title,
+        assignee:document.getElementById('f-assignee').value,
+        project:document.getElementById('f-project').value,
+        due:document.getElementById('f-due').value,
+        priority:document.getElementById('f-priority').value,
+        status:document.getElementById('f-status').value,
+        note:''
+      };
+      state.tasks.unshift(task);
+      state.activity.unshift({id:Date.now()+1,text:`Se asignó “${task.title}” a ${task.assignee}`,at:'Ahora'});
+      saveState(); closeModal(); renderTasks(); toast('Tarea creada');
+    });
+  }
+
+  function renderProjects(){
+    main.innerHTML = pageHead(
+      'Proyectos y procesos',
+      'Seguimiento completo de negociaciones, importaciones, operaciones y procesos internos.',
+      canEdit('projects')?'<button class="btn primary" id="new-project">+ Nuevo proyecto</button>':''
+    ) + `
+    <div class="grid">
+      ${state.projects.map(p=>`
+        <section class="card span-6">
+          <div class="row-head">
+            <div>
+              <h2 style="margin-bottom:4px">${esc(p.name)}</h2>
+              <div class="row-meta">${esc(p.client)} · Responsable: ${esc(p.owner)}</div>
+            </div>
+            ${statusBadge(p.status)}
+          </div>
+          <div class="progress"><span style="width:${p.progress}%"></span></div>
+          <div class="module-row"><span>Progreso</span><strong>${p.progress}%</strong></div>
+          <div class="module-row"><span>Próximo paso</span><strong>${esc(p.next)}</strong></div>
+          <div class="module-row"><span>Tareas vinculadas</span><strong>${state.tasks.filter(t=>t.project===p.name).length}</strong></div>
+        </section>`).join('')}
+    </div>`;
+
+    document.getElementById('new-project')?.addEventListener('click',()=>showModal('Nuevo proyecto',`
+      <form id="project-form">
+        <div class="form-grid">
+          <div><label>Nombre</label><input id="p-name" required placeholder="Ej. Importación Cliente XYZ"></div>
+          <div><label>Responsable</label><select id="p-owner">${state.users.map(u=>`<option>${esc(u.name)}</option>`).join('')}</select></div>
+          <div><label>Cliente / referencia</label><input id="p-client" placeholder="Cliente XYZ"></div>
+          <div><label>Estado</label><select id="p-status"><option>Planificación</option><option>En proceso</option><option>En revisión</option></select></div>
+        </div>
+        <div><label style="margin-top:12px">Próximo paso</label><input id="p-next" placeholder="Ej. Confirmar cotización"></div>
+        <div class="form-actions"><button class="btn primary" type="submit">Crear proyecto</button></div>
+      </form>`));
+
+    setTimeout(()=>{
+      document.getElementById('project-form')?.addEventListener('submit',e=>{
+        e.preventDefault();
+        state.projects.unshift({
+          id:Date.now(),
+          name:document.getElementById('p-name').value.trim(),
+          owner:document.getElementById('p-owner').value,
+          client:document.getElementById('p-client').value.trim()||'Interno',
+          status:document.getElementById('p-status').value,
+          progress:0,
+          next:document.getElementById('p-next').value.trim()||'Definir siguiente paso'
+        });
+        saveState(); closeModal(); renderProjects(); toast('Proyecto creado');
+      });
+    },0);
+  }
+
+  function renderFinance(){
+    const total=(arr)=>arr.reduce((a,b)=>a+Number(b.balance||0),0);
+    const grand=total(state.finance.banks)+total(state.finance.cash)+total(state.finance.crypto);
+
+    const section = (title,arr,kind)=>`
+      <section class="card span-4">
+        <h2>${title}</h2>
+        ${arr.map(x=>`
+          <div class="module-row">
+            <div><strong>${esc(x.name)}</strong><div class="row-meta">${esc(x.currency)}</div></div>
+            <strong>${fmtMoney(x.balance)}</strong>
+          </div>`).join('')}
+        ${canEdit('finance')?`<button class="btn secondary small" data-fin-add="${kind}" style="margin-top:12px">+ Agregar</button>`:''}
+      </section>`;
+
+    main.innerHTML = pageHead(
+      'Finanzas',
+      'Bancos, efectivo, criptomonedas, cuentas por cobrar y cuentas por pagar con acceso segmentado.'
+    ) + `
+    <div class="grid">
+      <section class="card span-12">
+        <div class="kpi"><span>Disponibilidad total registrada</span><strong>${fmtMoney(grand)}</strong></div>
+      </section>
+      ${section('Bancos',state.finance.banks,'banks')}
+      ${section('Efectivo / cajas',state.finance.cash,'cash')}
+      ${section('Criptomonedas',state.finance.crypto,'crypto')}
+      <section class="card span-6">
+        <h2>Cuentas por cobrar</h2>
+        ${state.finance.receivables.map(x=>`<div class="module-row"><div><strong>${esc(x.name)}</strong><div class="row-meta">Vence ${esc(x.due)}</div></div><div><strong>${fmtMoney(x.amount)}</strong><div>${statusBadge(x.status)}</div></div></div>`).join('')}
+      </section>
+      <section class="card span-6">
+        <h2>Cuentas por pagar</h2>
+        ${state.finance.payables.map(x=>`<div class="module-row"><div><strong>${esc(x.name)}</strong><div class="row-meta">Vence ${esc(x.due)}</div></div><div><strong>${fmtMoney(x.amount)}</strong><div>${statusBadge(x.status)}</div></div></div>`).join('')}
+      </section>
+    </div>`;
+
+    main.querySelectorAll('[data-fin-add]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const kind=btn.dataset.finAdd;
+        showModal('Agregar saldo',`
+          <form id="fin-form">
+            <div class="form-grid">
+              <div><label>Nombre</label><input id="fin-name" required placeholder="Ej. Banco nuevo"></div>
+              <div><label>Saldo</label><input id="fin-balance" type="number" min="0" step="0.01" required></div>
+            </div>
+            <div class="form-actions"><button class="btn primary" type="submit">Guardar</button></div>
+          </form>`);
+        document.getElementById('fin-form').addEventListener('submit',e=>{
+          e.preventDefault();
+          state.finance[kind].push({id:Date.now(),name:document.getElementById('fin-name').value.trim(),currency:'USD',balance:Number(document.getElementById('fin-balance').value)});
+          saveState(); closeModal(); renderFinance(); toast('Saldo agregado');
+        });
+      });
+    });
+  }
+
+  function renderLegal(){
+    main.innerHTML = pageHead(
+      'Jurídico',
+      'Contratos, permisos, títulos de propiedad, documentación regulatoria y vencimientos.',
+      canEdit('legal')?'<button class="btn primary" id="new-legal">+ Cargar registro</button>':''
+    ) + `
+    <div class="grid">
+      <section class="card span-12">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Documento</th><th>Tipo</th><th>Responsable</th><th>Vencimiento</th><th>Estado</th></tr></thead>
+            <tbody>
+              ${state.legalDocs.map(d=>`<tr><td><strong>${esc(d.title)}</strong></td><td>${esc(d.type)}</td><td>${esc(d.responsible)}</td><td>${esc(d.expires||'No aplica')}</td><td>${statusBadge(d.status)}</td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <div class="callout span-12"><strong>Control de acceso:</strong> la información jurídica puede ser visible solo para Jurídico, el propietario y supervisores autorizados. El permiso para VER no implica permiso para MODIFICAR.</div>
+    </div>`;
+
+    document.getElementById('new-legal')?.addEventListener('click',()=>{
+      showModal('Nuevo documento jurídico',`
+        <form id="legal-form">
+          <div class="form-grid">
+            <div><label>Título</label><input id="l-title" required></div>
+            <div><label>Tipo</label><select id="l-type"><option>Contrato</option><option>Arrendamiento</option><option>Permiso</option><option>Propiedad</option><option>Seguridad</option><option>Otro</option></select></div>
+            <div><label>Responsable</label><input id="l-resp" value="Andrea"></div>
+            <div><label>Vencimiento</label><input id="l-exp" type="date"></div>
+          </div>
+          <div class="form-actions"><button class="btn primary" type="submit">Guardar registro</button></div>
+        </form>`);
+      document.getElementById('legal-form').addEventListener('submit',e=>{
+        e.preventDefault();
+        state.legalDocs.unshift({id:Date.now(),title:document.getElementById('l-title').value.trim(),type:document.getElementById('l-type').value,responsible:document.getElementById('l-resp').value.trim()||'Jurídico',expires:document.getElementById('l-exp').value,status:'Vigente'});
+        saveState(); closeModal(); renderLegal(); toast('Documento registrado');
+      });
+    });
+  }
+
+  function renderInventory(){
+    const available=(i)=>Math.max(0,Number(i.stock)-Number(i.reserved));
+    main.innerHTML = pageHead(
+      'Inventario y activos',
+      'Control de existencias, ubicaciones, reservas, stock mínimo y activos asignados.',
+      canEdit('inventory')?'<button class="btn primary" id="new-item">+ Nuevo producto</button>':''
+    ) + `
+    <div class="grid">
+      <section class="card span-12">
+        <h2>Inventario</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Producto</th><th>SKU</th><th>Ubicación</th><th>Stock</th><th>Reservado</th><th>Disponible</th><th>Alerta</th></tr></thead>
+            <tbody>
+            ${state.inventory.map(i=>`<tr>
+              <td><strong>${esc(i.name)}</strong><div class="row-meta">Costo ref.: ${fmtMoney(i.cost)}</div></td>
+              <td>${esc(i.sku)}</td><td>${esc(i.location)}</td><td>${i.stock}</td><td>${i.reserved}</td><td>${available(i)}</td>
+              <td>${Number(i.stock)<=Number(i.min)?'<span class="badge red">Stock bajo</span>':'<span class="badge green">Normal</span>'}</td>
+            </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card span-12">
+        <h2>Activos de la empresa</h2>
+        <div class="grid">
+          ${state.assets.map(a=>`
+            <div class="row span-4">
+              <div class="row-head"><div><div class="row-title">${esc(a.name)}</div><div class="row-meta">${esc(a.type)} · Responsable: ${esc(a.responsible)}</div></div>${statusBadge(a.status)}</div>
+              <div class="row-meta">Documentación: ${esc(a.document)}</div>
+            </div>`).join('')}
+        </div>
+      </section>
+    </div>`;
+
+    document.getElementById('new-item')?.addEventListener('click',()=>{
+      showModal('Nuevo producto de inventario',`
+        <form id="inv-form">
+          <div class="form-grid">
+            <div><label>Producto</label><input id="i-name" required></div>
+            <div><label>SKU</label><input id="i-sku" required></div>
+            <div><label>Ubicación</label><input id="i-location" value="Almacén Caracas"></div>
+            <div><label>Stock actual</label><input id="i-stock" type="number" min="0" value="0"></div>
+            <div><label>Stock mínimo</label><input id="i-min" type="number" min="0" value="0"></div>
+            <div><label>Costo referencial</label><input id="i-cost" type="number" min="0" step="0.01" value="0"></div>
+          </div>
+          <div class="form-actions"><button class="btn primary" type="submit">Agregar producto</button></div>
+        </form>`);
+      document.getElementById('inv-form').addEventListener('submit',e=>{
+        e.preventDefault();
+        state.inventory.unshift({
+          id:Date.now(),name:document.getElementById('i-name').value.trim(),sku:document.getElementById('i-sku').value.trim(),
+          location:document.getElementById('i-location').value.trim(),stock:Number(document.getElementById('i-stock').value),
+          reserved:0,min:Number(document.getElementById('i-min').value),cost:Number(document.getElementById('i-cost').value)
+        });
+        saveState(); closeModal(); renderInventory(); toast('Producto agregado');
+      });
+    });
+  }
+
+  function renderDocs(){
+    main.innerHTML = pageHead(
+      'Documentos y conocimiento',
+      'Manuales, organigramas, procedimientos, políticas e información para incorporación de personal.'
+    ) + `
+    <div class="grid">
+      <section class="card span-8">
+        <h2>Biblioteca interna</h2>
+        <div class="list">
+          ${state.docs.map(d=>`<div class="row"><div class="row-head"><div><div class="row-title">${esc(d.title)}</div><div class="row-meta">${esc(d.category)} · Visible para: ${esc(d.audience)}</div></div><span class="badge blue">PDF / Documento</span></div></div>`).join('')}
+        </div>
+      </section>
+      <aside class="card span-4">
+        <h2>Onboarding</h2>
+        <div class="callout">Los empleados nuevos pueden consultar procedimientos, organigrama, reglamentos, formatos y documentación asociada directamente a sus tareas.</div>
+      </aside>
+    </div>`;
+  }
+
+  function renderTeam(){
+    main.innerHTML = pageHead(
+      'Equipo y permisos',
+      'Roles predeterminados con permisos separados para VER y MODIFICAR.'
+    ) + `
+    <div class="grid">
+      <section class="card span-5">
+        <h2>Usuarios de la empresa</h2>
+        <div class="list">
+          ${state.users.map(u=>`<div class="row"><div class="row-head"><div><div class="row-title">${esc(u.name)}</div><div class="row-meta">${esc(u.area)}</div></div><span class="badge purple">${esc(roleNames[u.role]||u.role)}</span></div></div>`).join('')}
+        </div>
+      </section>
+      <section class="card span-7">
+        <h2>Permisos del rol: ${esc(roleLabel())}</h2>
+        <div class="permissions-grid">
+          <div class="head">Módulo</div><div class="head center">Ver</div><div class="head center">Modificar</div>
+          ${['tasks','projects','finance','legal','inventory','docs','team','settings'].map(m=>`
+            <div>${esc(moduleInfo[m].label)}</div>
+            <div class="center">${perm(m).view?'✓':'—'}</div>
+            <div class="center">${perm(m).edit?'✓':'—'}</div>`).join('')}
+        </div>
+        <div class="callout" style="margin-top:14px">Ejemplo: un supervisor puede tener acceso integral de lectura sin capacidad para modificar saldos, contratos o documentos sensibles.</div>
+      </section>
+    </div>`;
+  }
+
+  function renderSettings(){
+    main.innerHTML = pageHead(
+      'Configuración',
+      'Autogestión de la empresa sin depender de un proveedor externo.'
+    ) + `
+    <div class="grid">
+      <section class="card span-7">
+        <h2>Módulos de la empresa</h2>
+        ${['tasks','projects','finance','legal','inventory','docs','team'].map(m=>`
+          <div class="module-row">
+            <div><strong>${esc(moduleInfo[m].label)}</strong><div class="row-meta">Activar o desactivar este módulo para la empresa.</div></div>
+            <label class="toggle"><input type="checkbox" data-module-toggle="${m}" ${state.company.modules[m]?'checked':''}> Activo</label>
+          </div>`).join('')}
+      </section>
+      <aside class="card span-5">
+        <h2>Empresa</h2>
+        <label>Nombre de la empresa</label>
+        <input id="company-input" value="${esc(state.company.name)}">
+        <div class="form-actions">
+          <button class="btn primary" id="save-company">Guardar</button>
+          <button class="btn danger" id="reset-demo">Restablecer demo</button>
+        </div>
+        <div class="callout" style="margin-top:14px">En una implementación real aquí también se configurarían departamentos, usuarios, permisos, monedas, almacenes, notificaciones e integraciones.</div>
+      </aside>
+    </div>`;
+
+    main.querySelectorAll('[data-module-toggle]').forEach(chk=>{
+      chk.addEventListener('change',()=>{
+        const m=chk.dataset.moduleToggle;
+        state.company.modules[m]=chk.checked;
+        saveState();
+        renderAll();
+        toast(`${moduleInfo[m].label}: ${chk.checked?'activado':'desactivado'}`);
+      });
+    });
+    document.getElementById('save-company').addEventListener('click',()=>{
+      const v=document.getElementById('company-input').value.trim();
+      if(v) state.company.name=v;
+      saveState(); renderAll(); toast('Configuración guardada');
+    });
+    document.getElementById('reset-demo').addEventListener('click',()=>{
+      if(confirm('¿Restablecer todos los datos de demostración?')) resetState();
+    });
+  }
+
+  function renderCurrent(){
+    const fn={
+      dashboard:renderDashboard,tasks:renderTasks,projects:renderProjects,finance:renderFinance,
+      legal:renderLegal,inventory:renderInventory,docs:renderDocs,team:renderTeam,settings:renderSettings
+    }[state.currentView] || renderDashboard;
+    fn();
+  }
+
+  function renderAll(){
+    ensureValidView();
+    roleSelect.value=state.currentRole;
+    companyName.textContent=state.company.name;
+    renderNav();
+    renderCurrent();
+  }
+
+  function showModal(title,body){
+    closeModal();
+    const wrap=document.createElement('div');
+    wrap.className='modal-wrap';
+    wrap.id='modal-wrap';
+    wrap.innerHTML=`<div class="modal" role="dialog" aria-modal="true" aria-label="${esc(title)}">
+      <div class="modal-head"><h2>${esc(title)}</h2><button class="close" id="modal-close" type="button" aria-label="Cerrar">×</button></div>
+      ${body}
+    </div>`;
+    document.body.appendChild(wrap);
+    document.getElementById('modal-close').addEventListener('click',closeModal);
+    wrap.addEventListener('click',e=>{ if(e.target===wrap) closeModal(); });
+  }
+  function closeModal(){ document.getElementById('modal-wrap')?.remove(); }
+
+  roleSelect.addEventListener('change',()=>{
+    state.currentRole=roleSelect.value;
+    saveState();
+    renderAll();
+    toast(`Vista: ${roleLabel()}`);
+  });
+
+  menuBtn.addEventListener('click',()=>sidebar.classList.toggle('open'));
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeModal(); sidebar.classList.remove('open'); }});
+  renderAll();
+})();
+
+  </script>
+</body>
+</html>
