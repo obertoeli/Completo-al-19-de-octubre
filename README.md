@@ -1,1 +1,0 @@
-# Completo-al-19-de-octubre
